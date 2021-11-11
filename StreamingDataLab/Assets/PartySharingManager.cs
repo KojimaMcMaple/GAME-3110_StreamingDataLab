@@ -27,7 +27,7 @@ public class PartySharingManager : MonoBehaviour
     private void JoinSharingRoomButtonPressed()
     {
         string name = room_input_field_.text;
-        client_.SendMessageToHost(ClientToServerSignifiers.kJoinSharingRoom + "");
+        client_.SendMessageToHost(ClientToServerSignifiers.kJoinSharingRoom + ","+ name);
     }
 
     private void SendPartyButtonPressed()

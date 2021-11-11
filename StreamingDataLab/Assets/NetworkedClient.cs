@@ -100,6 +100,7 @@ public class NetworkedClient : MonoBehaviour
     {
         byte[] buffer = Encoding.Unicode.GetBytes(msg);
         NetworkTransport.Send(hostID, connectionID, reliableChannelID, buffer, msg.Length * sizeof(char), out error);
+        Debug.Log("msg SENT = " + msg);
     }
 
     private void ProcessReceivedMsg(string msg, int id)

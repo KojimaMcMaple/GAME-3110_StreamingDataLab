@@ -327,6 +327,7 @@ static public class AssignmentPart2
             {
                 data.AddLast((int)GameDataId.EquipmentDataId + "," + item);
             }
+            Debug.Log("> data is: " + data.Last);
         }
         client.SendMessageToHost(ClientToServerSignifiers.kPartyTransferDataStart + "");
         foreach (string item in data)
