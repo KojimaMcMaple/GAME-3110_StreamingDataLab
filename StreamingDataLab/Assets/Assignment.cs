@@ -316,6 +316,25 @@ static public class AssignmentPart2
         }
         sw.Close();
     }
+
+    static public void SendOnScreenPartyToServerForSharing(NetworkedClient client)
+    {
+        LinkedList<string> data = new LinkedList<string>();
+        foreach (PartyCharacter pc in GameContent.partyCharacters)
+        {
+            data.AddLast((int)GameDataId.CharacterDataId + "," + pc.classID + "," + pc.health + "," + pc.mana + "," + pc.strength + "," + pc.agility + "," + pc.wisdom);
+            foreach (int item in pc.equipment)
+            {
+                data.AddLast((int)GameDataId.EquipmentDataId + "," + item);
+            }
+        }
+        client.SendMessageToHost(ClientToServerSignifiers.kPartyTransferDataStart + "");
+        foreach (string item in data)
+        {
+            client.SendMessageToHost(ClientToServerSignifiers.kPartyTransferData + ","+item);
+        }
+        client.SendMessageToHost(ClientToServerSignifiers.kPartyTransferDataEnd + "");
+    }
 }
 
 #endregion
