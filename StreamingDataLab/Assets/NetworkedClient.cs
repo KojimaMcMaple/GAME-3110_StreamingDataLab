@@ -16,14 +16,13 @@ public class NetworkedClient : MonoBehaviour
     byte error;
     bool isConnected = false;
     int ourClientID;
+    LinkedList<string> incoming_party_data_;
 
-    // Start is called before the first frame update
     void Start()
     {
         Connect();
     }
 
-    // Update is called once per frame
     void Update()
     {
         //if(Input.GetKeyDown(KeyCode.S))
@@ -86,7 +85,6 @@ public class NetworkedClient : MonoBehaviour
                 isConnected = true;
 
                 Debug.Log("Connected, id = " + connectionID);
-
             }
         }
     }
@@ -106,6 +104,21 @@ public class NetworkedClient : MonoBehaviour
     private void ProcessReceivedMsg(string msg, int id)
     {
         Debug.Log("msg received = " + msg + ".  connection id = " + id);
+
+        string[] csv = msg.Split(',');
+        int signifier = int.Parse(csv[0]);
+        if (signifier == ServerToClientSignifiers.kPartyTransferDataStart)
+        {
+            incoming_party_data_ = new LinkedList<string>();
+        }
+        else if (signifier == ServerToClientSignifiers.kPartyTransferData)
+        {
+            incoming_party_data_.AddLast(msg);
+        }
+        else if (signifier == ServerToClientSignifiers.kPartyTransferDataEnd)
+        {
+            AssignmentPart2.LoadPartyFromSharedFriend(incoming_party_data_);
+        }
     }
 
     public bool IsConnected()

@@ -256,6 +256,26 @@ static public class AssignmentPart2
         GameContent.RefreshUI();
     }
 
+    static public void LoadPartyFromSharedFriend(LinkedList<string> data)
+    {
+        //copied from LoadPartyDropDownChanged()
+        GameContent.partyCharacters.Clear();
+        foreach(string line in data)
+        {
+            string[] csv = line.Split(',');
+            int game_data_id = int.Parse(csv[1]); //bumps up 1 to skip signifier
+            if (game_data_id == (int)GameDataId.CharacterDataId)
+            {
+                GameContent.partyCharacters.AddLast(new PartyCharacter(int.Parse(csv[2]), int.Parse(csv[3]), int.Parse(csv[4]), int.Parse(csv[5]), int.Parse(csv[6]), int.Parse(csv[7])));
+            }
+            else if (game_data_id == (int)GameDataId.EquipmentDataId)
+            {
+                GameContent.partyCharacters.Last.Value.equipment.AddLast(int.Parse(csv[2]));
+            }
+        }
+        GameContent.RefreshUI();
+    }
+
     static public void SavePartyButtonPressed()
     {
         bool does_name_exist = false;
